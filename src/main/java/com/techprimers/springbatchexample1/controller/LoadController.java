@@ -24,9 +24,11 @@ public class LoadController {
     Job job;
 
     @GetMapping
-    public BatchStatus load() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
-
-
+    public BatchStatus load() throws JobParametersInvalidException
+            , JobExecutionAlreadyRunningException
+            , JobRestartException
+            , JobInstanceAlreadyCompleteException
+    {
         Map<String, JobParameter> maps = new HashMap<>();
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobParameters parameters = new JobParameters(maps);

@@ -26,6 +26,7 @@ public class Processor implements ItemProcessor<User, User> {
         String dept = DEPT_NAMES.get(deptCode);
         user.setDept(dept);
         user.setTime(new Date());
+
         System.out.println(String.format("Converted from [%s] to [%s]", deptCode, dept));
         return user;
     }

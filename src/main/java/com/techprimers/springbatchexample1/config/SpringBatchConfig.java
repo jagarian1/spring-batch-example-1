@@ -15,9 +15,11 @@ import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 
 @Configuration
 @EnableBatchProcessing
@@ -46,10 +48,12 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public FlatFileItemReader<User> itemReader() {
+    public FlatFileItemReader<User> itemReader(@Value("${input}") Resource resource) {
+//    public FlatFileItemReader<User> flatFileItemReader(@Value("${input}") Resource resource) {
 
         FlatFileItemReader<User> flatFileItemReader = new FlatFileItemReader<>();
-        flatFileItemReader.setResource(new FileSystemResource("src/main/resources/users.csv"));
+        flatFileItemReader.setResource(resource);
+//        flatFileItemReader.setResource(new FileSystemResource("src/main/resources/users.csv"));
         flatFileItemReader.setName("CSV-Reader");
         flatFileItemReader.setLinesToSkip(1);
         flatFileItemReader.setLineMapper(lineMapper());
@@ -64,7 +68,7 @@ public class SpringBatchConfig {
 
         lineTokenizer.setDelimiter(",");
         lineTokenizer.setStrict(false);
-        lineTokenizer.setNames("id", "name", "dept", "salary");
+        lineTokenizer.setNames(new String[]{"id", "name", "dept", "salary"});
 
         BeanWrapperFieldSetMapper<User> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(User.class);
